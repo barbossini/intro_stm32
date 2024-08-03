@@ -15,6 +15,11 @@
   *
   ******************************************************************************
   */
+#define FAST	200
+#define FASTER	50
+#define SLOWER	400
+
+
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -49,7 +54,9 @@
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
-
+void led_on(void);
+void blink(void);
+void delay (void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -94,6 +101,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  blink();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -244,3 +252,35 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
+
+// void HAL_GPIO_WritePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, GPIO_PinState PinState);
+void led_on(void)
+{
+	HAL_GPIO_WritePin(GPIOA,GPIO_PIN_10,GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_3,GPIO_PIN_SET);
+}
+
+void led_off(void)
+{
+	HAL_GPIO_WritePin(GPIOA,GPIO_PIN_10,GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_3,GPIO_PIN_RESET);
+}
+
+// void HAL_GPIO_TogglePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin);
+
+
+// blink a LED with a delay of 200ms
+void blink()
+{
+// GPIO list : PB_3 ; PA_10
+	led_on();
+	delay();
+	led_off();
+	delay();
+}
+
+void delay ( void )
+{
+	volatile int count = 1000 * FAST;
+	while ( count-- );
+}
